@@ -1,0 +1,25 @@
+/* Doctor Vet: точность. Без теней, тонкие линии, короткие переходы. */
+[data-brand="doctor-vet"] {
+  --btn-h: 48px;
+  --btn-radius: 4px;
+  --btn-size: 0.9375rem;
+  --btn-weight: 500;
+  --btn-press: none;
+  --chip-radius: 3px;
+  --chip-font: var(--f-mono);
+  --chip-size: 0.9375rem;
+  --seg-radius: 4px;
+  --field-radius: 3px;
+  --tag-radius: 2px;
+  --tag-bg: #e6efea;
+  --tag-ink: #1c6e55;
+}
+
+[data-brand="doctor-vet"] .btn:active:not(:disabled)::before {
+  background: color-mix(in oklab, var(--btn-bg, var(--c-accent)) 86%, black);
+}
+
+[data-brand="doctor-vet"] .btn[data-variant="signal"] {
+  --btn-bg: var(--c-signal);
+  --btn-ink: var(--c-on-signal);
+}

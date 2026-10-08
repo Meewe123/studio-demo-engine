@@ -1,26 +1,167 @@
-@import "tailwindcss";
+/* Сканируем только код: в review/ лежат скриншоты, им нечего делать в сборке CSS. */
+@import "tailwindcss" source(none);
+@source "../";
+@source "../../brands";
+@import "../ui/ui.css";
+@import "../skins/black-star/skin.css";
+@import "../skins/darel/skin.css";
+@import "../skins/doctor-vet/skin.css";
+@import "../skins/expert-beauty/skin.css";
+@import "../skins/mr-gordons/skin.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Дефолтная палитра Tailwind выключена: в проекте существуют только токены брендов. */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --font-*: initial;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-raised: var(--c-raised);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-accent: var(--c-accent);
+  --color-on-accent: var(--c-on-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-signal: var(--c-signal);
+  --color-on-signal: var(--c-on-signal);
+  --color-mark: var(--c-mark);
+  --font-display: var(--f-display);
+  --font-text: var(--f-text);
+  --font-mono: var(--f-mono);
+  --radius-s: var(--r-s);
+  --radius-m: var(--r-m);
+  --radius-l: var(--r-l);
+  --shadow-card: var(--sh-card);
+  --shadow-pop: var(--sh-pop);
+  --ease-brand: var(--ease);
+  --ease-brand-out: var(--ease-out);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Тема студии — для витрины и styleguide. Бренды переопределяют переменные. */
+:root {
+  --c-bg: #e8e8e4;
+  --c-surface: #f4f4f1;
+  --c-raised: #ffffff;
+  --c-line: #c9c9c3;
+  --c-ink: #000000;
+  --c-muted: #55554f;
+  --c-accent: #000000;
+  --c-on-accent: #ffffff;
+  --c-accent-soft: #d9d9d3;
+  --c-signal: #c8272a;
+  --c-on-signal: #ffffff;
+  --c-mark: #d9d9d3;
+  --c-focus: #000000;
+  --f-display: var(--font-plex-sans);
+  --f-text: var(--font-plex-sans);
+  --f-mono: var(--font-plex-mono);
+  --display-weight: 500;
+  --display-tracking: -0.03em;
+  --display-leading: 1;
+  --display-style: normal;
+  --display-variation: normal;
+  --text-weight: 400;
+  --text-leading: 1.5;
+  --text-strong: 600;
+  --r-s: 2px;
+  --r-m: 4px;
+  --r-l: 8px;
+  --w-hair: 1px;
+  --w-rule: 1px;
+  --sh-card: none;
+  --sh-pop: 0 20px 40px -20px rgba(0, 0, 0, 0.3);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+  --icon-stroke: 1.5;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--c-bg);
+    color: var(--c-ink);
+    font-family: var(--f-text);
+    font-weight: var(--text-weight);
+    line-height: var(--text-leading);
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  b,
+  strong {
+    font-weight: var(--text-strong);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+  }
+
+  /* Lucide: толщина линии иконок задаётся брендом. */
+  .lucide {
+    stroke-width: var(--icon-stroke);
+    flex: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility type-display {
+  font-family: var(--f-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: var(--display-leading);
+  font-style: var(--display-style);
+  font-variation-settings: var(--display-variation);
+  text-wrap: balance;
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@utility type-mono {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+}
+
+@utility pretty {
+  text-wrap: pretty;
+}
+
+@utility safe-x {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
 }

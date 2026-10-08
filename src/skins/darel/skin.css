@@ -1,0 +1,22 @@
+/* Darel: мягкие органичные формы, кнопки-камешки, зелёные тени. */
+[data-brand="darel"] {
+  --btn-h: 54px;
+  --btn-radius: 999px;
+  --btn-size: 1.0625rem;
+  --btn-weight: 650;
+  --btn-press: scale(0.97);
+  --chip-radius: 999px;
+  --chip-size: 1rem;
+  --chip-weight: 500;
+  --chip-px: 1.1em;
+  --seg-radius: 999px;
+  --field-radius: 14px;
+  --tag-radius: 999px;
+  --tag-bg: #dfe5d7;
+  --tag-ink: #1e3b2c;
+}
+
+[data-brand="darel"] .btn[data-variant="secondary"] {
+  --btn-shadow: inset 0 0 0 1.5px var(--c-accent);
+  --btn-ink: var(--c-accent);
+}

@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Демо-движок студии
 
-## Getting Started
+Один Next.js-проект, пять брендированных демо. Каждое демо — отдельная ссылка для владельца бизнеса: страница-презентация с живым приложением, панелью владельца и авто-туром.
 
-First, run the development server:
+| Ссылка | Что это |
+|---|---|
+| `/` | Внутренняя витрина студии: все демо, ссылки, «скопировать ссылку» |
+| `/demo/<slug>` | Презентация для владельца. На телефоне — приложение во весь экран с переключателем «Клиент / Владелец» |
+| `/demo/<slug>?tour=1` | Авто-тур ~35 секунд: курсор-призрак сам проходит сценарий |
+| `/demo/<slug>?lang=uz` | То же на узбекском (или `en`). Язык запоминается в cookie |
+| `/demo/<slug>/app` | Клиентское приложение, работает и как Telegram Mini App |
+| `/demo/<slug>/admin` | Панель владельца или администратора |
+| `/demo/<slug>/board` | ТВ-табло очереди (только у брендов с модулем `queue`) |
+| `/styleguide` | Токены и компоненты всех тем |
+
+Готово: **Black Star** (`black-star`). Остальные бренды уже имеют тему, тексты и данные, их сценарии добавляются по мере ответов владельцев.
+
+## Запуск
+
+Нужен Node.js 20.9+.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откройте http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Прод-сборка локально:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+### Переменные окружения
 
-To learn more about Next.js, take a look at the following resources:
+| Переменная | Зачем |
+|---|---|
+| `NEXT_PUBLIC_CONTACT_TG` | Куда ведёт «Обсудить внедрение»: `@username`, `username` или полный URL. Без неё стоит плейсхолдер |
+| `NEXT_PUBLIC_SITE_URL` | Абсолютный адрес сайта для OG-картинок и QR на табло. На Vercel не нужен — берётся `VERCEL_PROJECT_PRODUCTION_URL` |
+| `TELEGRAM_BOT_TOKEN` | (фаза 6) Включает кнопку «Получить тестовое напоминание в Telegram» |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Как устроено
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+brands/                 конфиги брендов — данные, тексты ru/uz/en, тема
+messages/{ru,uz,en}.json строки движка (кнопки тура, плашка, единицы)
+src/
+  app/[locale]/…        маршруты; язык в URL не виден (src/proxy.ts переписывает запрос)
+  engine/               тема, стор, симуляция, тур, адаптер Telegram
+  modules/              логика модулей: queue, booking, crm, leads…
+  skins/<slug>/         «душа» бренда: экраны, вау-компоненты, тур, OG
+  ui/                   общие примитивы без характера бренда
+scripts/                скриншоты, сквозные сценарии, Lighthouse
+review/                 скриншоты визуальной самопроверки (до/после)
+```
 
-## Deploy on Vercel
+- **Тема** — `brands/<slug>.ts → theme`. Это не только цвета: шрифты, радиусы, линии, тени, кривые движения, толщина иконок. Превращается в CSS-переменные (`--c-bg`, `--f-display`, `--r-m`…) и в Tailwind-классы (`bg-bg`, `text-accent`, `font-display`, `rounded-m`). Стандартная палитра Tailwind выключена.
+- **Характер компонентов** — `src/skins/<slug>/skin.css`: форма кнопок (`--btn-clip`, `--btn-shadow`), чипов, нажатий.
+- **Живая симуляция** — модель бренда (`src/skins/<slug>/model.ts`) детерминирована: одинаковое состояние у всех вкладок и после перезагрузки. Часы демо идут ускоренно (1 минута демо = 10 секунд). Стор пишет в localStorage и синхронизирует вкладки через BroadcastChannel; симуляцию двигает одна вкладка-лидер (Web Locks). Без этих API демо работает в памяти.
+- **Тур** — `src/skins/<slug>/tour.ts`: список шагов (`caption`, `tap`, `point`, `view`, `until`). Курсор нажимает настоящие кнопки с атрибутом `data-tour`, поэтому тур не может разойтись с приложением. Любое касание пользователя ставит тур на паузу.
+- **Шрифты** — `src/engine/theme/fonts.ts`, через `next/font`, только latin + cyrillic. Каждый шрифт проверен на кириллицу и узбекскую `ʻ` (U+02BB). Файлы шрифта скачиваются только на страницах бренда, который их использует.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Как добавить новый бренд за 15 минут
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Конфиг.** Скопируйте `brands/darel.ts` в `brands/<slug>.ts` и замените:
+   - `slug`, `name` (текстовый вордмарк — без чужих логотипов), `niche`;
+   - `theme`: цвета, `font` (ключи из `FontKey`), радиусы, движение. Нужен новый шрифт — добавьте его в `src/engine/theme/fonts.ts` и проверьте на кириллицу и `ʻ`;
+   - `pitch.headline` и `pitch.lede` — проблема и решение одним предложением, без упрёков владельцу;
+   - `branches` (реальные адреса — только из публичных источников), `services`, `staff`, `effects` (всегда прогноз);
+   - `copy.ru / uz / en`. Узбекский — латиница, `oʻ gʻ` через `ʻ`; пометьте `// TODO: проверить носителем`.
+2. **Реестр.** Добавьте строку в `brands/index.ts`.
+3. **Скин.** В `src/skins/index.ts` укажите `() => import("./placeholder")` — демо сразу заработает в теме бренда. Для полноценного сценария скопируйте `src/skins/black-star/` и замените экраны, модель и тур.
+4. **Вордмарк.** Добавьте `case` в `src/skins/wordmark.tsx`.
+5. **Проверка.** `npm run build`, затем `node scripts/shoot.mts --label <slug>`.
+
+## Проверки
+
+```bash
+node scripts/shoot.mts --label review-1
+```
+
+Скриншоты 390×844, 1440×900, 1920×1080 сохраняются в `review/review-1/`.
+
+```bash
+node scripts/flow.mts --cpu 4
+```
+
+Сквозной сценарий клиента на телефоне при CPU, замедленном в 4 раза.
+
+```bash
+node scripts/tour.mts --width 390 --cpu 4
+```
+
+Авто-тур, кадр каждые 4 секунды.
+
+```bash
+node scripts/lighthouse.mts
+```
+
+Lighthouse mobile. Запускайте на прод-сервере (`npm run build && npm start`).
+
+Перед первым запуском скриптов поставьте браузер для Playwright: `npx playwright install chromium`.
+
+## Деплой на Vercel
+
+1. Залейте репозиторий на GitHub и импортируйте его в Vercel (Framework: Next.js, всё по умолчанию). Или из терминала: `npx vercel` → `npx vercel --prod`.
+2. В Settings → Environment Variables задайте `NEXT_PUBLIC_CONTACT_TG`.
+3. Свой домен — Settings → Domains. После смены домена пересоберите проект, чтобы OG-картинки и QR получили новый адрес.
+
+Индексация закрыта трижды: `robots.txt`, `<meta name="robots">` и заголовок `X-Robots-Tag`. Ботам превью ссылок (Telegram, Instagram, WhatsApp) доступ открыт, иначе вместо картинки будет пустая карточка.
+
+### Превью ссылки в Telegram
+
+Telegram кэширует превью ссылок. Если OG-картинка или заголовок изменились после первой отправки ссылки, обновите превью: напишите [@WebpageBot](https://t.me/WebpageBot) и отправьте ему ссылку на демо — он перечитает страницу.
+
+### Telegram Mini App
+
+1. В [@BotFather](https://t.me/BotFather): `/newbot` → `/newapp` (или Bot Settings → Configure Mini App) → URL: `https://<домен>/demo/<slug>/app`.
+2. Внутри Telegram приложение красит шапку и фон в цвет бренда, использует нативные MainButton и BackButton и вибрацию. В обычном браузере те же экраны работают с собственными кнопками.
+
+## Честность демо
+
+- Название компании — текстовый вордмарк, без логотипа. Black Star — без звезды.
+- Внизу каждой страницы: «Демо-концепт для <Компания>. Не официальный сайт. Данные примерные».
+- Цены, мастера, врачи, расписания — примерные и лежат в конфиге. Адреса — из публичных карточек на картах.
+- Цифры эффектов подписаны как прогноз.
+- В текстах не цитируем отзывы и не делаем проблему виной владельца: показываем, как может быть.

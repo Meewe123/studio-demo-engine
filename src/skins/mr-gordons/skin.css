@@ -1,0 +1,25 @@
+/* Mr. Gordon’s: печать. Жёсткая тень-отпечаток, которая «вдавливается» при нажатии. */
+[data-brand="mr-gordons"] {
+  --btn-h: 52px;
+  --btn-radius: 3px;
+  --btn-size: 1rem;
+  --btn-weight: 650;
+  --btn-shadow: 3px 3px 0 #c8272a;
+  --btn-shadow-press: 0 0 0 #c8272a;
+  --btn-press: translate(3px, 3px);
+  --chip-radius: 3px;
+  --chip-size: 0.9375rem;
+  --chip-weight: 500;
+  --seg-radius: 3px;
+  --field-radius: 2px;
+  --tag-radius: 2px;
+  --tag-bg: #e2a523;
+  --tag-ink: #16244a;
+}
+
+[data-brand="mr-gordons"] .btn[data-variant="secondary"] {
+  --btn-bg: #fbfaf6;
+  --btn-ink: var(--c-ink);
+  --btn-shadow: inset 0 0 0 2px #16244a, 3px 3px 0 #16244a;
+  --btn-shadow-press: inset 0 0 0 2px #16244a;
+}

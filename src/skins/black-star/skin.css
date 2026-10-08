@@ -1,0 +1,322 @@
+/* Black Star: механика, фаски 45° как у номерного знака, янтарь только для «вашего». */
+[data-brand="black-star"] {
+  --chamfer: 10px;
+  --btn-h: 56px;
+  --btn-font: var(--f-display);
+  --btn-weight: 600;
+  --btn-size: 0.875rem;
+  --btn-tracking: 0.01em;
+  --btn-radius: 0;
+  --btn-clip: polygon(var(--chamfer) 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%, 0 var(--chamfer));
+  --btn-press: translateY(1px);
+  --chip-font: var(--f-mono);
+  --chip-weight: 500;
+  --chip-size: 1rem;
+  --chip-radius: 0;
+  --chip-on-bg: var(--c-accent);
+  --chip-on-ink: var(--c-on-accent);
+  --seg-radius: 0;
+  --seg-bg: #141518;
+  --field-bg: #141518;
+  --field-radius: 0;
+  --tag-radius: 0;
+  --tag-bg: rgba(255, 176, 0, 0.14);
+  --tag-ink: #ffb000;
+}
+
+[data-brand="black-star"] .seg button {
+  font-family: var(--f-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 0.75rem;
+}
+
+[data-brand="black-star"] .btn[data-variant="secondary"] {
+  --btn-bg: #1c1d21;
+  --btn-ink: var(--c-ink);
+  --btn-shadow: none;
+}
+
+/* Хром: вордмарк и крупные заголовки — как шильдик на багажнике. */
+.bs-chrome {
+  background: linear-gradient(178deg, #f7f8fa 0%, #c9cdd2 38%, #5d6168 52%, #e7e9ec 58%, #9ea3aa 78%, #f3f5f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Панели и строки ---------- */
+.bs-panel {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 40%), var(--c-surface);
+  clip-path: polygon(var(--chamfer) 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%, 0 var(--chamfer));
+}
+
+.bs-row {
+  position: relative;
+  min-height: 64px;
+  background: var(--c-surface);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: background-color var(--dur-fast) var(--ease);
+  cursor: pointer;
+}
+
+.bs-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--c-accent);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.bs-row:hover {
+  background: var(--c-raised);
+}
+
+.bs-row:active::before,
+.bs-row[aria-pressed="true"]::before {
+  transform: scaleY(1);
+}
+
+/* ---------- Талон ---------- */
+.bs-ticket {
+  animation: bs-print 1100ms steps(11, end) both;
+  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.55));
+}
+
+/* Перфорация сверху и зубчатый отрыв снизу нарисованы цветом фона под талоном. */
+.bs-ticket-paper {
+  --hole: var(--c-bg);
+  background:
+    radial-gradient(circle at 8px 0, var(--hole) 4.5px, transparent 5px) 0 0 / 16px 10px repeat-x,
+    conic-gradient(from 135deg at 50% 0, var(--hole) 90deg, transparent 0) 0 100% / 12px 6px repeat-x,
+    linear-gradient(90deg, #ffb000 0 6px, transparent 6px),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), transparent 18%),
+    #ecebe5;
+}
+
+@keyframes bs-print {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Перекидное табло ---------- */
+.flap-row {
+  display: inline-flex;
+  gap: var(--flap-gap, 0.08em);
+  font-family: var(--f-mono);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.flap {
+  position: relative;
+  display: inline-block;
+  width: var(--flap-w, 0.86em);
+  height: var(--flap-h, 1.32em);
+  perspective: 3em;
+  color: var(--flap-ink, var(--c-ink));
+}
+
+.flap-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  background: var(--flap-bg, #17181c);
+  backface-visibility: hidden;
+}
+
+.flap-half > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flap-top {
+  top: 0;
+  border-radius: var(--flap-r, 3px) var(--flap-r, 3px) 0 0;
+  transform-origin: 50% 100%;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--flap-bg, #17181c) 92%, white), var(--flap-bg, #17181c));
+}
+
+.flap-top > span {
+  top: 0;
+}
+
+.flap-bottom {
+  bottom: 0;
+  border-radius: 0 0 var(--flap-r, 3px) var(--flap-r, 3px);
+  transform-origin: 50% 0;
+}
+
+.flap-bottom > span {
+  bottom: 0;
+}
+
+.flap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 0.5px);
+  height: 1px;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 3;
+}
+
+.flap-fold-top {
+  z-index: 2;
+  animation: flap-fold-top 55ms ease-in forwards;
+}
+
+.flap-fold-bottom {
+  z-index: 2;
+  transform: rotateX(90deg);
+  animation: flap-fold-bottom 55ms ease-out 55ms forwards;
+}
+
+@keyframes flap-fold-top {
+  to {
+    transform: rotateX(-90deg);
+    filter: brightness(0.6);
+  }
+}
+
+@keyframes flap-fold-bottom {
+  from {
+    transform: rotateX(90deg);
+    filter: brightness(1.4);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
+.bs-board .flap-row {
+  --flap-gap: 0.06em;
+}
+
+.bs-board-ready .flap {
+  animation: bs-ready-blink 1.6s steps(2, jump-none) infinite;
+}
+
+@keyframes bs-ready-blink {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ---------- Презентация ---------- */
+/* Вход обложки — на CSS: текст виден в первом кадре, ещё до загрузки JS. */
+.bs-rise {
+  animation: bs-rise 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes bs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Отступ сверху для шапки приложения: под «островок» в рамке и под док на мобильном. */
+.bs-phone,
+.bs-owner {
+  --app-top: 52px;
+}
+
+@media (min-width: 768px) {
+  .bs-phone {
+    --app-top: 30px;
+  }
+
+  .bs-owner {
+    --app-top: 0px;
+  }
+}
+
+/* На десктопе ключевая фраза уже стоит в заголовке страницы — в телефоне её не повторяем. */
+@media (min-width: 768px) {
+  .bs-phone .bs-home-title {
+    display: none;
+  }
+
+  /* Телефон стоит на мокром асфальте и отражается в нём. */
+  .bs-phone {
+    -webkit-box-reflect: below 16px linear-gradient(transparent 84%, rgba(0, 0, 0, 0.22));
+  }
+}
+
+[data-brand="black-star"] .type-display {
+  overflow-wrap: break-word;
+}
+
+.bs-hud {
+  color: var(--c-ink);
+  background: rgba(20, 21, 24, 0.94);
+  box-shadow:
+    inset 0 0 0 1px var(--c-line),
+    0 24px 48px -16px rgba(0, 0, 0, 0.8);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.bs-hud .h-\[2px\] > div {
+  background: var(--c-accent);
+}
+
+.bs-dock {
+  background: linear-gradient(180deg, var(--c-bg) 70%, transparent);
+}
+
+.bs-sheet {
+  border-radius: 0;
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%, 0 14px);
+}
+
+.bs-sheet[open] {
+  animation: bs-sheet-in var(--dur-slow) var(--ease-out);
+}
+
+@keyframes bs-sheet-in {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+
+/* Статичные отражения фонарей — фолбэк для слабых устройств и база для шейдера. */
+.bs-reflections {
+  background:
+    radial-gradient(3% 60% at 14% 100%, rgba(255, 176, 0, 0.13), transparent 70%),
+    radial-gradient(2.4% 55% at 38% 100%, rgba(255, 176, 0, 0.09), transparent 70%),
+    radial-gradient(3.2% 62% at 63% 100%, rgba(255, 176, 0, 0.12), transparent 70%),
+    radial-gradient(2.2% 50% at 86% 100%, rgba(255, 176, 0, 0.08), transparent 70%);
+  filter: blur(2px);
+}
+
+.bs-row:focus-visible,
+.bs-panel:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--c-focus);
+}
+
+@media (forced-colors: active) {
+  .bs-chrome {
+    color: CanvasText;
+    background: none;
+  }
+}

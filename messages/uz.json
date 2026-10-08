@@ -1,0 +1,68 @@
+{
+  "common": {
+    "disclaimer": "{company} uchun demo-konsepsiya. Rasmiy sayt emas. Maʼlumotlar taxminiy.",
+    "forecast": "prognoz",
+    "client": "Mijoz",
+    "owner": "Egasi",
+    "language": "Til",
+    "reset": "Demoni qayta boshlash",
+    "close": "Yopish",
+    "about": "Demo haqida",
+    "cta": "Joriy etishni muhokama qilish",
+    "ctaNote": "Telegramga yozing — bugun javob beraman",
+    "sum": "{amount} soʻm",
+    "from": "{amount} dan",
+    "min": "{n} daq",
+    "hours": "{n} soat",
+    "skip": "Asosiy qismga",
+    "views": "Demo rejimi",
+    "demoBadge": "Demo-konsepsiya"
+  },
+  "tour": {
+    "play": "Turni koʻrish",
+    "length": "35 soniya",
+    "skip": "Oʻtkazib yuborish",
+    "replay": "Takrorlash",
+    "pausedHint": "Tur toʻxtatildi — siz oʻzingiz bosdingiz",
+    "resume": "Turni davom ettirish",
+    "progress": "Tur: {step}-qadam, jami {total}",
+    "tryYourself": "Oʻzim sinab koʻraman"
+  },
+  "telegram": {
+    "bot": "bot",
+    "now": "hozir",
+    "confirm": "Tasdiqlash",
+    "reschedule": "Koʻchirish",
+    "open": "Ochish",
+    "chatTitle": "Bot bilan chat"
+  },
+  "showcase": {
+    "title": "Beshta demo",
+    "lede": "Studiyaning ichki vitrinasi. Har bir karta — egasi uchun alohida havola.",
+    "pitch": "Taqdimot",
+    "tour": "Tur",
+    "app": "Ilova",
+    "admin": "Pult",
+    "board": "Tablo",
+    "ready": "tayyor",
+    "draft": "jarayonda",
+    "copy": "Havolani nusxalash",
+    "copied": "Havola nusxalandi",
+    "styleguide": "Styleguide"
+  },
+  "styleguide": {
+    "title": "Styleguide",
+    "lede": "Beshta mavzuning tokenlari va komponentlari bitta sahifada.",
+    "palette": "Ranglar",
+    "type": "Shriftlar",
+    "display": "Sarlavha",
+    "text": "Matn",
+    "mono": "Raqamlar",
+    "components": "Komponentlar",
+    "shape": "Shakl",
+    "motion": "Harakat",
+    "radius": "Radiuslar",
+    "stroke": "Ikonka chizigʻi",
+    "sample": "Oʻzbekiston, gʻoʻza, maʼno — Съешь ещё этих мягких булок — 1 234 567 soʻm."
+  }
+}

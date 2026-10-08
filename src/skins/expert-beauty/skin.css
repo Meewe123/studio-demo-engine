@@ -1,0 +1,30 @@
+/* Expert Beauty: глянец. Прямые углы, тонкие золотые линейки, медленные переходы. */
+[data-brand="expert-beauty"] {
+  --btn-h: 56px;
+  --btn-radius: 0;
+  --btn-size: 0.875rem;
+  --btn-weight: 500;
+  --btn-tracking: 0.04em;
+  --btn-px: 1.75em;
+  --btn-press: scale(0.99);
+  --chip-radius: 0;
+  --chip-size: 0.9375rem;
+  --seg-radius: 0;
+  --field-radius: 0;
+  --tag-radius: 0;
+  --tag-bg: #ebcfc8;
+  --tag-ink: #2a1b15;
+}
+
+[data-brand="expert-beauty"] .btn[data-variant="secondary"] {
+  --btn-shadow: inset 0 0 0 1px #a8834e;
+  --btn-ink: var(--c-ink);
+}
+
+[data-brand="expert-beauty"] .chip {
+  box-shadow: inset 0 -1px 0 #a8834e;
+}
+
+[data-brand="expert-beauty"] .chip[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px var(--c-accent);
+}

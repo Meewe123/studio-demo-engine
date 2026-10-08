@@ -1,0 +1,68 @@
+{
+  "common": {
+    "disclaimer": "Demo concept for {company}. Not an official website. Sample data.",
+    "forecast": "forecast",
+    "client": "Customer",
+    "owner": "Owner",
+    "language": "Language",
+    "reset": "Reset demo",
+    "close": "Close",
+    "about": "About the demo",
+    "cta": "Talk about launching it",
+    "ctaNote": "Message me on Telegram — I’ll reply today",
+    "sum": "{amount} UZS",
+    "from": "from {amount}",
+    "min": "{n} min",
+    "hours": "{n} h",
+    "skip": "Skip to content",
+    "views": "Demo view",
+    "demoBadge": "Demo concept"
+  },
+  "tour": {
+    "play": "Watch the tour",
+    "length": "35 seconds",
+    "skip": "Skip",
+    "replay": "Replay",
+    "pausedHint": "Tour paused — you tapped",
+    "resume": "Resume tour",
+    "progress": "Tour: step {step} of {total}",
+    "tryYourself": "Try it myself"
+  },
+  "telegram": {
+    "bot": "bot",
+    "now": "now",
+    "confirm": "Confirm",
+    "reschedule": "Reschedule",
+    "open": "Open",
+    "chatTitle": "Chat with the bot"
+  },
+  "showcase": {
+    "title": "Five demos",
+    "lede": "The studio’s internal showcase. Each card is a separate link for an owner.",
+    "pitch": "Pitch",
+    "tour": "Tour",
+    "app": "App",
+    "admin": "Console",
+    "board": "Board",
+    "ready": "ready",
+    "draft": "in progress",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "styleguide": "Styleguide"
+  },
+  "styleguide": {
+    "title": "Styleguide",
+    "lede": "Tokens and components of all five themes on one page.",
+    "palette": "Palette",
+    "type": "Type",
+    "display": "Display",
+    "text": "Text",
+    "mono": "Figures",
+    "components": "Components",
+    "shape": "Shape",
+    "motion": "Motion",
+    "radius": "Radii",
+    "stroke": "Icon stroke",
+    "sample": "Sphinx of black quartz, judge my vow. Oʻzbekiston, gʻoʻza — 1,234,567 UZS."
+  }
+}

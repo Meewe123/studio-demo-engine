@@ -1,0 +1,290 @@
+/*
+ * Примитивы движка. Здесь только механика: характер (форма, шрифт, нажатие)
+ * приходит из переменных --btn-*, --chip-* и т. д., которые задаёт скин бренда.
+ */
+
+@layer components {
+  .btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    min-height: max(44px, var(--btn-h, 48px));
+    padding: 0 var(--btn-px, 1.25em);
+    font-family: var(--btn-font, var(--f-text));
+    font-weight: var(--btn-weight, var(--text-strong));
+    font-size: var(--btn-size, 1rem);
+    letter-spacing: var(--btn-tracking, 0);
+    text-transform: var(--btn-transform, none);
+    line-height: 1.1;
+    color: var(--btn-ink, var(--c-on-accent));
+    border-radius: var(--btn-radius, var(--r-m));
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      color var(--dur-base) var(--ease);
+  }
+
+  /* Фон живёт в ::before: так форму можно вырезать clip-path, а фокус остаётся видимым. */
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-bg, var(--c-accent));
+    border-radius: inherit;
+    clip-path: var(--btn-clip, none);
+    box-shadow: var(--btn-shadow, none);
+    transition:
+      background-color var(--dur-base) var(--ease),
+      box-shadow var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: var(--btn-press, scale(0.98));
+  }
+
+  .btn:active:not(:disabled)::before {
+    box-shadow: var(--btn-shadow-press, var(--btn-shadow, none));
+  }
+
+  .btn[data-variant="secondary"] {
+    --btn-bg: transparent;
+    --btn-ink: var(--c-ink);
+    --btn-shadow: inset 0 0 0 var(--w-rule) var(--c-line);
+    --btn-shadow-press: inset 0 0 0 var(--w-rule) var(--c-ink);
+  }
+
+  .btn[data-variant="ghost"] {
+    --btn-bg: transparent;
+    --btn-ink: var(--c-ink);
+    --btn-shadow: none;
+    --btn-px: 0.75em;
+  }
+
+  .btn[data-size="s"] {
+    --btn-h: 40px;
+    --btn-size: 0.875rem;
+    --btn-px: 0.9em;
+  }
+
+  .btn[data-block] {
+    width: 100%;
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  /* Выбор: услуги, слоты, филиалы. */
+  .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: 44px;
+    padding: 0 var(--chip-px, 1em);
+    font-family: var(--chip-font, var(--f-text));
+    font-weight: var(--chip-weight, var(--text-weight));
+    font-size: var(--chip-size, 0.9375rem);
+    letter-spacing: var(--chip-tracking, 0);
+    color: var(--c-ink);
+    background: var(--chip-bg, transparent);
+    border-radius: var(--chip-radius, var(--r-s));
+    box-shadow: inset 0 0 0 var(--w-hair) var(--c-line);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease),
+      box-shadow var(--dur-fast) var(--ease);
+  }
+
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"],
+  .chip[aria-selected="true"] {
+    background: var(--chip-on-bg, var(--c-accent));
+    color: var(--chip-on-ink, var(--c-on-accent));
+    box-shadow: inset 0 0 0 var(--w-hair) var(--chip-on-bg, var(--c-accent));
+  }
+
+  .chip:disabled {
+    cursor: not-allowed;
+    color: var(--c-muted);
+    background: transparent;
+    box-shadow: inset 0 0 0 var(--w-hair) color-mix(in oklab, var(--c-line) 55%, transparent);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .field > span {
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+  }
+
+  .field input {
+    min-height: 48px;
+    padding: 0 0.9rem;
+    font: inherit;
+    color: var(--c-ink);
+    background: var(--field-bg, var(--c-raised));
+    border-radius: var(--field-radius, var(--r-s));
+    box-shadow: inset 0 0 0 var(--w-hair) var(--c-line);
+    outline: none;
+    transition: box-shadow var(--dur-fast) var(--ease);
+  }
+
+  .field input:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--c-focus);
+  }
+
+  /* Сегментный переключатель «Клиент / Владелец». */
+  .seg {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    padding: 3px;
+    gap: 2px;
+    background: var(--seg-bg, var(--c-surface));
+    border-radius: var(--seg-radius, var(--r-m));
+    box-shadow: inset 0 0 0 var(--w-hair) var(--c-line);
+  }
+
+  .seg button {
+    position: relative;
+    isolation: isolate;
+    min-height: 40px;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    font-weight: var(--text-strong);
+    color: var(--c-muted);
+    border-radius: calc(var(--seg-radius, var(--r-m)) - 2px);
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .seg button[aria-pressed="true"] {
+    color: var(--seg-on-ink, var(--c-on-accent));
+  }
+
+  .seg .seg-thumb {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--seg-on-bg, var(--c-accent));
+    border-radius: inherit;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    height: 1.5rem;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: var(--text-strong);
+    line-height: 1;
+    color: var(--tag-ink, var(--c-ink));
+    background: var(--tag-bg, var(--c-accent-soft));
+    border-radius: var(--tag-radius, var(--r-s));
+  }
+
+  /* Рамка телефона: только на планшете и десктопе. На мобильном — обычный полноэкранный блок. */
+  .phone-frame {
+    --frame-edge: var(--frame-edge-color, #2a2c31);
+  }
+
+  @media (min-width: 768px) {
+    .phone-frame {
+      padding: 11px;
+      border-radius: 54px;
+      background: linear-gradient(
+        145deg,
+        color-mix(in oklab, var(--frame-edge) 70%, white) 0%,
+        var(--frame-edge) 18%,
+        #0c0c0e 52%,
+        var(--frame-edge) 82%,
+        color-mix(in oklab, var(--frame-edge) 60%, white) 100%
+      );
+      box-shadow:
+        inset 0 0 0 1.5px rgba(255, 255, 255, 0.08),
+        0 50px 90px -30px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(0, 0, 0, 0.6);
+    }
+
+    .phone-frame-screen {
+      border-radius: 43px;
+      transform: translateZ(0);
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .phone-frame-island {
+      display: none;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 12px;
+    top: -60px;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    background: var(--c-ink);
+    color: var(--c-bg);
+    border-radius: var(--r-s);
+  }
+
+  .skip-link:focus-visible {
+    top: 12px;
+  }
+
+  /* Фактуры брендов (статичные; Black Star добавляет WebGL поверх). */
+  .texture-paper-grain {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .17 0 0 0 0 .15 0 0 0 0 .12 0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .texture-ruled {
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0 calc(var(--margin-x, 44px) - 1px),
+        color-mix(in oklab, var(--c-signal) 55%, transparent) calc(var(--margin-x, 44px) - 1px) var(--margin-x, 44px),
+        transparent var(--margin-x, 44px)
+      ),
+      repeating-linear-gradient(180deg, transparent 0 27px, color-mix(in oklab, var(--c-line) 70%, transparent) 27px 28px);
+  }
+
+  .texture-clinical-grid {
+    background-image:
+      linear-gradient(90deg, color-mix(in oklab, var(--c-line) 45%, transparent) 1px, transparent 1px),
+      linear-gradient(180deg, color-mix(in oklab, var(--c-line) 45%, transparent) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .texture-gloss {
+    background-image:
+      radial-gradient(120% 70% at 85% -10%, color-mix(in oklab, var(--c-accent-soft) 70%, transparent), transparent 60%),
+      linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.45) 46%, transparent 62%);
+  }
+
+  .texture-wet-asphalt {
+    background-image:
+      radial-gradient(60% 45% at 70% 0%, rgba(255, 176, 0, 0.16), transparent 70%),
+      radial-gradient(40% 30% at 15% 100%, rgba(255, 176, 0, 0.07), transparent 70%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
