@@ -42,3 +42,4 @@ next-env.d.ts
 
 # отчёты Lighthouse — пересоздаются скриптом
 /review/lighthouse/
+.vercel
