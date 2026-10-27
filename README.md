@@ -1,3 +1,71 @@
+# Studio Demo Engine
+
+**One Next.js codebase that turns a local business into a working, branded demo app in a few minutes — built to pitch software to business owners in Uzbekistan.**
+
+- **Live demo (Black Star car wash, auto-tour):** https://dela-beige.vercel.app/demo/black-star?tour=1
+- **Video of the auto-tour (45 s):** [docs/media/tour.webm](docs/media/tour.webm)
+
+| Pitch page | Customer app (phone) |
+|---|---|
+| ![Pitch page](docs/media/pitch-desktop.png) | <img src="docs/media/client-app-mobile.png" alt="Customer app" width="260"> |
+
+| Owner panel | TV board in the lounge |
+|---|---|
+| ![Owner panel](docs/media/owner-panel.png) | ![TV board](docs/media/tv-board.png) |
+
+## What it is and why
+
+Small businesses here (car washes, clinics, salons, restaurants) still run on phone calls and live queues. Instead of describing an app to an owner, I wanted to send one link that shows *their* business already working: their name, colours and branches, a customer app, an owner panel and a TV board — all live and in sync.
+
+Each demo link contains:
+
+- **Pitch page** — the problem and the solution in one screen, with the live app embedded.
+- **Customer app** — e.g. booking a car-wash slot and following the car through each stage. Also runs as a **Telegram Mini App**.
+- **Owner panel** — bays, load, bookings and an event feed.
+- **TV board** — a split-flap queue board for the waiting room.
+- **Auto-tour** (`?tour=1`) — a ~35-second ghost cursor clicks through the real interface, so an owner understands it without a call.
+- **Three languages** — Russian, Uzbek (Latin) and English.
+
+The simulation is deterministic and accelerated (1 demo minute = 10 seconds), so every tab and every reload shows the same state; tabs stay in sync through `BroadcastChannel`.
+
+Black Star is fully built; four more brands (Darel, Doctor Vet, Expert Beauty, Mr. Gordon's) have theme, copy and data and use a placeholder scenario. All are unsolicited concept demos: the studio is not affiliated with these companies, and every page says so.
+
+## Tech stack
+
+Next.js 16 (App Router, static generation) · React 19 · TypeScript · Tailwind CSS 4 (classes generated from each brand's theme tokens) · next-intl · Zustand · Motion · OGL (WebGL background) · Telegram Mini App API · Playwright (screenshots and end-to-end flows) · Vercel.
+
+## Run locally
+
+Requires Node.js 20.9+.
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000/demo/black-star (add `?tour=1` for the auto-tour, `?lang=en` for English).
+
+Production build: `npm run build && npm start`. Regenerate the README screenshots and video: `npx playwright install chromium`, then `node scripts/readme-media.mts` against a running production server.
+
+## My role
+
+I used AI coding tools heavily — mostly **Claude Code**. The `.claude/` folder and `AGENTS.md` are its working files. What I did myself:
+
+- **Product:** chose the niches and businesses, defined what each demo must show an owner, and wrote the scenarios (customer flow, owner panel, board, auto-tour).
+- **Directing the AI:** broke the work into tasks, wrote the specifications and the rules the code had to follow (theming, honest disclaimers, Uzbek typography, performance budget).
+- **Review:** checked the screens at phone and desktop sizes, compared screenshots before and after each change, and sent work back when it was wrong; the `review/` folder holds those screenshots.
+- **Go-to-market:** found the businesses and sent them the demos.
+
+I can explain how every part works — the brand theme system, the deterministic simulation, the tour engine, the Telegram integration — even where the first draft of the code was written by AI.
+
+## What I learned
+
+- **Distribution was the bottleneck, not the product.** I sent about 100 offers with demo links; none turned into a sale. They were cold messages to owners I had no connection with, and most never replied or didn't read past the first lines — so the demos mostly weren't even opened.
+- **Validate demand before building.** I built the product before talking to customers. A few conversations first would have shown that getting attention was the real problem.
+- **AI makes building cheap, which makes judgment the scarce part.** The hard work was deciding what to build, describing it precisely and catching what was wrong — not typing the code.
+
+---
+
 # Демо-движок студии
 
 Один Next.js-проект, пять брендированных демо. Каждое демо — отдельная ссылка для владельца бизнеса: страница-презентация с живым приложением, панелью владельца и авто-туром.
