@@ -60,7 +60,7 @@ I can explain how every part works — the brand theme system, the deterministic
 
 ## What I learned
 
-- **Distribution was the bottleneck, not the product.** I sent about 100 offers with demo links; none turned into a sale. They were cold messages to owners I had no connection with, and most never replied or didn't read past the first lines — so the demos mostly weren't even opened.
+- **Distribution was the bottleneck, not the product.** I sent about 20 offers with demo links; none turned into a sale. They were cold messages to owners I had no connection with, and most never replied or didn't read past the first lines — so the demos mostly weren't even opened.
 - **Validate demand before building.** I built the product before talking to customers. A few conversations first would have shown that getting attention was the real problem.
 - **AI makes building cheap, which makes judgment the scarce part.** The hard work was deciding what to build, describing it precisely and catching what was wrong — not typing the code.
 
